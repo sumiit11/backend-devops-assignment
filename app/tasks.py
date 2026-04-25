@@ -1,25 +1,28 @@
-from celery import Celery
+from app.worker import celery_app
+from pymongo import MongoClient
 import time
-from app.db import jobs_collection
 
-celery = Celery(
-    "tasks",
-    broker="redis://localhost:6379/0",
-    backend="redis://localhost:6379/0"
-)
+# Connect to MongoDB (Docker service name)
+client = MongoClient("mongodb://mongo:27017")
+db = client["task_db"]
+collection = db["jobs"]
 
-@celery.task
-def process_job(job_id):
-    print(f"Processing job {job_id}")
+@celery_app.task(bind=True, autoretry_for=(Exception,), retry_backoff=True, max_retries=3)
+def process_job(self, job_id):
+    print(f"Processing job: {job_id}")
 
-    jobs_collection.update_one(
+    # Update status → processing
+    collection.update_one(
         {"job_id": job_id},
         {"$set": {"status": "processing"}}
     )
 
     time.sleep(5)
 
-    jobs_collection.update_one(
+    # Update status → done
+    collection.update_one(
         {"job_id": job_id},
         {"$set": {"status": "done"}}
     )
+
+    print(f"Completed job: {job_id}")
