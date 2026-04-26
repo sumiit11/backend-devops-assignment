@@ -135,20 +135,6 @@ push image
 👉 but NEVER deploy → FAIL
 
 
-
-❌ No architecture diagram
-👉 automatic rejection risk
-
-❌ No explanation of why services chosen
-👉 not just WHAT, but WHY
-
-❌ Hardcoded secrets
-👉 must use .env + GitHub secrets
-
-🧪 Quick self-check checklist
-Answer YES to all:
-
-
  GitHub Actions deploys to AWS automatically
 
 
