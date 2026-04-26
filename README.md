@@ -163,12 +163,34 @@ Answer YES to all:
 
  README explains service choices
 
+ ## AWS Deployment Architecture
+
+We use AWS ECS Fargate to run containerized services without managing servers.
+
+- API and Celery workers run as ECS services
+- Docker images are stored in Amazon ECR
+- Redis is hosted using ElastiCache
+- MongoDB is hosted on MongoDB Atlas
+- CloudWatch is used for logs and monitoring
+
 
  README explains deployment flow
 
 
  Clean commit history (not 1 commit)
 
+
+
+Add this (simple + effective)
+## Architecture Diagram
+
+Client → FastAPI (ECS)
+        ↓
+     Redis (ElastiCache)
+        ↓
+     Celery Worker (ECS)
+        ↓
+     MongoDB (Atlas)
 
 
 
