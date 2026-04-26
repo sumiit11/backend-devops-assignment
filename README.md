@@ -193,6 +193,81 @@ Client → FastAPI (ECS)
      MongoDB (Atlas)
 
 
+Production-Grade Task Queue Service
+
+A scalable, containerized job processing system built with FastAPI, Celery, Redis, and MongoDB. This project simulates a real-world backend system with asynchronous task execution, observability, and automated deployment.
+
+📌 Features
+Async job processing with Celery
+REST API with FastAPI
+Redis as message broker
+MongoDB for persistence
+Rate limiting using Redis
+Prometheus metrics + Grafana dashboards
+Structured JSON logging
+Fully containerized with Docker
+CI/CD pipeline using GitHub Actions
+AWS-ready deployment architecture
+🏗️ Architecture Overview
+🔄 System Flow
+
+Client → FastAPI API → Redis Queue → Celery Worker → MongoDB
+
+☁️ AWS Architecture
+Client
+   ↓
+FastAPI (ECS Fargate)
+   ↓
+Redis (ElastiCache)
+   ↓
+Celery Worker (ECS Fargate)
+   ↓
+MongoDB (MongoDB Atlas)
+🧠 Design Decisions
+FastAPI
+
+Chosen for its high performance, async support, and clean API design.
+
+Celery + Redis
+
+Used for distributed background job processing with retry and fault tolerance.
+
+MongoDB
+
+Flexible schema to store job states and results efficiently.
+
+ECS Fargate
+
+Selected to run containers without managing servers, enabling easy scaling and deployment.
+
+ElastiCache (Redis)
+
+Provides low-latency queueing required for task processing.
+
+Prometheus + Grafana
+
+Used for monitoring metrics and visualizing system performance.
+
+📁 Project Structure
+.
+├── app/
+│   ├── api/          # FastAPI routes
+│   ├── workers/      # Celery worker logic
+│   ├── models/       # MongoDB models
+│   └── core/         # config & utilities
+├── docker/
+├── docker-compose.yml
+├── .github/workflows/
+└── README.md
+⚙️ Running Locally
+1. Clone the repo
+git clone https://github.com/sumiit11/backend-devops-assignment.git
+cd backend-devops-assignment
+2. Setup environment variables
+cp .env.example .env
+3. Start all services
+docker compose up --build 
+
 
 
 
